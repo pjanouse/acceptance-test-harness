@@ -330,7 +330,8 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         launcher.port(sshslave1.port(22));
         launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
 //        launcher.pwdCredentials("test", "test");
-        launcher.pwdCredentials("test", sshslave1.getPrivateKeyString());
+//        System.out.println("\n\nPrivateString: " + sshslave1.getPrivateKeyString() + "\n\n");
+        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
         slave.save();
         slave.waitUntilOnline();
         assertTrue(slave.isOnline());
