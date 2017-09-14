@@ -322,33 +322,6 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         b1.waitUntilFinished(PROVISION_TIMEOUT);
 */
 
-        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
-        c.open();
-
-        final UserPwdCredential sc = c.add(UserPwdCredential.class);
-        sc.scope.select("GLOBAL");
-        sc.username.set("test");
-        sc.password.set("test");
-        sc.add();
-
-//        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
-//        sc.scope.select("GLOBAL");
-//        sc.username.set("test");
-//
-//        sc.enterDirectly(sshslave1.getPrivateKeyString());
-//        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
-        c.create();
-
-        //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
-        elasticSleep(10000);
-        jenkins.configure();
-        cloud = addCloud(jenkins.getConfigPage());
-        //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
-        elasticSleep(10000);
-        jenkins.save();
-
-        System.out.println("\n\n" + cloud.getCloudName() + ": " + cloud + "\n\n");
-
         sshslave1 = docker1.get();
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
         slave.setExecutors(1);
@@ -358,18 +331,22 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         launcher.host.set(sshslave1.ipBound(22));
         launcher.port(sshslave1.port(22));
         launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
-//        launcher.pwdCredentials("test", "test");
+        launcher.pwdCredentials("test", "test");
 //        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
-        launcher.selectCredentials("test");
+//        launcher.selectCredentials("test");
         slave.save();
+
+        jenkins.configure();
+        cloud = addCloud(jenkins.getConfigPage());
+        //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
+        elasticSleep(10000);
+        jenkins.save();
+
+        System.out.println("\n\n" + cloud.getCloudName() + ": " + cloud + "\n\n");
+
         slave.waitUntilOnline();
         assertTrue(slave.isOnline());
         System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
-
-
-
-
-
 
     }
 
