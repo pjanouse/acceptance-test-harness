@@ -327,7 +327,8 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
         sc.scope.select("GLOBAL");
         sc.username.set("test");
-        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
+        sc.enterDirectly(sshslave1.getPrivateKeyString());
+//        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
         c.create();
 
         //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
