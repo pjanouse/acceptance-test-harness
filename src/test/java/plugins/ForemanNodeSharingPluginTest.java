@@ -333,6 +333,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         slave.save();
         slave.waitUntilOnline();
         assertTrue(slave.isOnline());
+        System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
     }
 
 }
