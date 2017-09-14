@@ -325,9 +325,11 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         sshslave1 = docker1.get();
         foreman = dockerForeman.get();
 
+/*
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
         slave.setExecutors(1);
         slave.remoteFS.set("/tmp");
+
 
         SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class);
         launcher.host.set(sshslave1.ipBound(22));
@@ -337,18 +339,25 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 //        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
 //        launcher.selectCredentials("test");
         slave.save();
+*/
 
+        new SshSlaveLauncher(null, null).pwdCredentials("test", "test");
         jenkins.configure();
         cloud = addCloud(jenkins.getConfigPage());
         //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
         elasticSleep(10000);
         jenkins.save();
 
-        System.out.println("\n\n" + cloud.getCloudName() + ": " + cloud + "\n\n");
+        FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
 
+        Build b1 = job1.scheduleBuild();
+        b1.waitUntilFinished(PROVISION_TIMEOUT);
+
+/*
         slave.waitUntilOnline();
         assertTrue(slave.isOnline());
         System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
+*/
 
     }
 
