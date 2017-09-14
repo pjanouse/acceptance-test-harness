@@ -15,6 +15,7 @@ import org.jenkinsci.test.acceptance.plugins.foreman_node_sharing.ForemanSharedN
 import org.jenkinsci.test.acceptance.plugins.ssh_credentials.SshPrivateKeyCredential;
 import org.jenkinsci.test.acceptance.plugins.ssh_slaves.SshSlaveLauncher;
 import org.jenkinsci.test.acceptance.po.Build;
+import org.jenkinsci.test.acceptance.po.Cloud;
 import org.jenkinsci.test.acceptance.po.DumbSlave;
 import org.jenkinsci.test.acceptance.po.FormValidation;
 import org.jenkinsci.test.acceptance.po.FreeStyleJob;
@@ -336,6 +337,30 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         slave.waitUntilOnline();
         assertTrue(slave.isOnline());
         System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
+
+
+
+
+
+        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
+        c.open();
+
+        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
+        sc.scope.select("GLOBAL");
+        sc.username.set("test");
+        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
+        c.create();
+
+        //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
+        elasticSleep(10000);
+        jenkins.configure();
+        cloud = addCloud(jenkins.getConfigPage());
+        //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
+        elasticSleep(10000);
+        jenkins.save();
+
+        System.out.println("\n\n" + cloud.getCloudName() + ": " + cloud + "\n\n");
+
     }
 
 }
