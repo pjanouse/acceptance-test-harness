@@ -321,27 +321,6 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         b1.waitUntilFinished(PROVISION_TIMEOUT);
 */
 
-        sshslave1 = docker1.get();
-        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
-        slave.setExecutors(1);
-        slave.remoteFS.set("/tmp");
-
-        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class);
-        launcher.host.set(sshslave1.ipBound(22));
-        launcher.port(sshslave1.port(22));
-        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
-//        launcher.pwdCredentials("test", "test");
-//        System.out.println("\n\nPrivateString: " + sshslave1.getPrivateKeyString() + "\n\n");
-        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
-        slave.save();
-        slave.waitUntilOnline();
-        assertTrue(slave.isOnline());
-        System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
-
-
-
-
-
         CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
         c.open();
 
@@ -360,6 +339,28 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         jenkins.save();
 
         System.out.println("\n\n" + cloud.getCloudName() + ": " + cloud + "\n\n");
+
+        sshslave1 = docker1.get();
+        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
+        slave.setExecutors(1);
+        slave.remoteFS.set("/tmp");
+
+        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class);
+        launcher.host.set(sshslave1.ipBound(22));
+        launcher.port(sshslave1.port(22));
+        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
+//        launcher.pwdCredentials("test", "test");
+//        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
+        launcher.selectCredentials("test");
+        slave.save();
+        slave.waitUntilOnline();
+        assertTrue(slave.isOnline());
+        System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
+
+
+
+
+
 
     }
 
