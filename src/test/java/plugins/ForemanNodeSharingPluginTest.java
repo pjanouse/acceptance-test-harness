@@ -300,4 +300,20 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
                 .setCredentials("test");
     }
 
+
+    /**
+     * Test that we can provision, build and release.
+     * @throws Exception if occurs.
+     */
+    @Test
+    public void test() throws Exception {
+        jenkins.save();
+
+        FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
+
+        Build b1 = job1.scheduleBuild();
+        b1.waitUntilFinished(PROVISION_TIMEOUT);
+    }
+
+
 }
