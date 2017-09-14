@@ -11,6 +11,7 @@ import org.jenkinsci.test.acceptance.junit.WithDocker;
 import org.jenkinsci.test.acceptance.junit.WithPlugins;
 import org.jenkinsci.test.acceptance.plugins.credentials.CredentialsPage;
 import org.jenkinsci.test.acceptance.plugins.credentials.ManagedCredentials;
+import org.jenkinsci.test.acceptance.plugins.credentials.UserPwdCredential;
 import org.jenkinsci.test.acceptance.plugins.foreman_node_sharing.ForemanSharedNodeCloudPageArea;
 import org.jenkinsci.test.acceptance.plugins.ssh_credentials.SshPrivateKeyCredential;
 import org.jenkinsci.test.acceptance.plugins.ssh_slaves.SshSlaveLauncher;
@@ -324,10 +325,17 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
         c.open();
 
-        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
+        final UserPwdCredential sc = c.add(UserPwdCredential.class);
         sc.scope.select("GLOBAL");
         sc.username.set("test");
-        sc.enterDirectly(sshslave1.getPrivateKeyString());
+        sc.password.set("test");
+        sc.add();
+
+//        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
+//        sc.scope.select("GLOBAL");
+//        sc.username.set("test");
+//
+//        sc.enterDirectly(sshslave1.getPrivateKeyString());
 //        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
         c.create();
 
