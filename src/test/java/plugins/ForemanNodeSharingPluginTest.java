@@ -323,6 +323,8 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 */
 
         sshslave1 = docker1.get();
+        foreman = dockerForeman.get();
+
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
         slave.setExecutors(1);
         slave.remoteFS.set("/tmp");
