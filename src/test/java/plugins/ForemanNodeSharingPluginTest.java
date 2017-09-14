@@ -341,7 +341,9 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         slave.save();
 */
 
-        new SshSlaveLauncher(null, null).pwdCredentials("test", "test");
+        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
+        slave.setLauncher(SshSlaveLauncher.class).pwdCredentials("test", "test");
+
         jenkins.configure();
         cloud = addCloud(jenkins.getConfigPage());
         //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
