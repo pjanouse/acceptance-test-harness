@@ -13,7 +13,9 @@ import org.jenkinsci.test.acceptance.plugins.credentials.CredentialsPage;
 import org.jenkinsci.test.acceptance.plugins.credentials.ManagedCredentials;
 import org.jenkinsci.test.acceptance.plugins.foreman_node_sharing.ForemanSharedNodeCloudPageArea;
 import org.jenkinsci.test.acceptance.plugins.ssh_credentials.SshPrivateKeyCredential;
+import org.jenkinsci.test.acceptance.plugins.ssh_slaves.SshSlaveLauncher;
 import org.jenkinsci.test.acceptance.po.Build;
+import org.jenkinsci.test.acceptance.po.DumbSlave;
 import org.jenkinsci.test.acceptance.po.FormValidation;
 import org.jenkinsci.test.acceptance.po.FreeStyleJob;
 import org.jenkinsci.test.acceptance.po.Jenkins;
@@ -36,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
 import static org.jenkinsci.test.acceptance.po.FormValidation.Kind.OK;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Acceptance Test Harness Test for Foreman Node Sharing Plugin.
@@ -63,7 +66,8 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
      * Setup instance before each test.
      * @throws Exception if occurs.
      */
-    @Before public void setUp() throws Exception {
+//    @Before
+    public void setUp() throws Exception {
 
         jenkins.runScript("import hudson.slaves.NodeProvisioner; NodeProvisioner.NodeProvisionerInvoker."
                 + "INITIALDELAY = NodeProvisioner.NodeProvisionerInvoker.RECURRENCEPERIOD = 100;");
@@ -307,13 +311,28 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
      */
     @Test
     public void test() throws Exception {
+/*
         jenkins.save();
 
         FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
 
         Build b1 = job1.scheduleBuild();
         b1.waitUntilFinished(PROVISION_TIMEOUT);
-    }
+*/
 
+        sshslave1 = docker1.get();
+        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
+        slave.setExecutors(1);
+        slave.remoteFS.set("/tmp");
+
+        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class);
+        launcher.host.set(sshslave1.ipBound(22));
+        launcher.port(sshslave1.port(22));
+        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
+        launcher.pwdCredentials("test", "test");
+        slave.save();
+        slave.waitUntilOnline();
+        assertTrue(slave.isOnline());
+    }
 
 }
