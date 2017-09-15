@@ -329,6 +329,9 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 //        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
 //        launcher.selectCredentials("test");
         slave.save();
+        slave.waitUntilOnline();
+        assertTrue(slave.isOnline());
+        System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
 
 
 /*
@@ -347,9 +350,6 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         Build b1 = job1.scheduleBuild();
         b1.waitUntilFinished(PROVISION_TIMEOUT);
 
-        slave.waitUntilOnline();
-        assertTrue(slave.isOnline());
-        System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
 */
 
     }
