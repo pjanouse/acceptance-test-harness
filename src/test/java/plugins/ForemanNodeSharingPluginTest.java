@@ -13,10 +13,12 @@ import org.jenkinsci.test.acceptance.plugins.credentials.CredentialsPage;
 import org.jenkinsci.test.acceptance.plugins.credentials.ManagedCredentials;
 import org.jenkinsci.test.acceptance.plugins.credentials.UserPwdCredential;
 import org.jenkinsci.test.acceptance.plugins.foreman_node_sharing.ForemanSharedNodeCloudPageArea;
+import org.jenkinsci.test.acceptance.plugins.ssh_credentials.SshCredentialDialog;
 import org.jenkinsci.test.acceptance.plugins.ssh_credentials.SshPrivateKeyCredential;
 import org.jenkinsci.test.acceptance.plugins.ssh_slaves.SshSlaveLauncher;
 import org.jenkinsci.test.acceptance.po.Build;
 import org.jenkinsci.test.acceptance.po.Cloud;
+import org.jenkinsci.test.acceptance.po.ComputerLauncher;
 import org.jenkinsci.test.acceptance.po.DumbSlave;
 import org.jenkinsci.test.acceptance.po.FormValidation;
 import org.jenkinsci.test.acceptance.po.FreeStyleJob;
@@ -46,7 +48,7 @@ import static org.junit.Assert.assertTrue;
  * Acceptance Test Harness Test for Foreman Node Sharing Plugin.
  *
  */
-@WithPlugins({"foreman-node-sharing", "ssh-slaves@1.10"})
+@WithPlugins({"foreman-node-sharing", "ssh-slaves@1.15"})
 @WithDocker
 public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
     @Inject private DockerContainerHolder<ForemanContainer> dockerForeman;
@@ -336,7 +338,8 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 
 
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
-        slave.setLauncher(SshSlaveLauncher.class).pwdCredentials("test", "test");
+        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class).pwdCredentials("test", "test");
+        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
         slave.save();
 
         jenkins.configure();
@@ -349,7 +352,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 
         Build b1 = job1.scheduleBuild();
         b1.waitUntilFinished(PROVISION_TIMEOUT);
-        
+
     }
 
 }
