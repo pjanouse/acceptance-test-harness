@@ -70,7 +70,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
      * Setup instance before each test.
      * @throws Exception if occurs.
      */
-//    @Before
+    @Before
     public void setUp() throws Exception {
 
         jenkins.runScript("import hudson.slaves.NodeProvisioner; NodeProvisioner.NodeProvisionerInvoker."
@@ -318,6 +318,9 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         sshslave1 = docker1.get();
         foreman = dockerForeman.get();
 
+        jenkins.runScript("import hudson.slaves.NodeProvisioner; NodeProvisioner.NodeProvisionerInvoker."
+                + "INITIALDELAY = NodeProvisioner.NodeProvisionerInvoker.RECURRENCEPERIOD = 100;");
+
 /*
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
         slave.setExecutors(1);
@@ -342,6 +345,12 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
         slave.save();
 
+        jenkins.configure();
+        cloud = addCloud(jenkins.getConfigPage());
+        //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
+        elasticSleep(10000);
+        jenkins.save();
+
         if (populateForeman(foreman.getUrl().toString()+"/api/v2", sshslave1.getCid(),
                 sshslave1.getIpAddress(), labelExpression1, "1") != 0) {
             throw new Exception("failed to populate foreman");
@@ -350,14 +359,9 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
                 "9.9.9.9", labelExpression2, "2") != 0) {
             throw new Exception("failed to populate foreman");
         }
-        jenkins.configure();
-        cloud = addCloud(jenkins.getConfigPage());
-        //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
         elasticSleep(10000);
-        jenkins.save();
 
         FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
-
         Build b1 = job1.scheduleBuild();
         b1.waitUntilFinished(PROVISION_TIMEOUT);
 
