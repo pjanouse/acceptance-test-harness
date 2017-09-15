@@ -343,6 +343,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
         slave.setLauncher(SshSlaveLauncher.class).pwdCredentials("test", "test");
+        slave.save();
 
         jenkins.configure();
         cloud = addCloud(jenkins.getConfigPage());
