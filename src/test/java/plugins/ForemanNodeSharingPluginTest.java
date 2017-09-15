@@ -70,7 +70,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
      * Setup instance before each test.
      * @throws Exception if occurs.
      */
-    @Before
+//    @Before
     public void setUp() throws Exception {
 
         jenkins.runScript("import hudson.slaves.NodeProvisioner; NodeProvisioner.NodeProvisionerInvoker."
