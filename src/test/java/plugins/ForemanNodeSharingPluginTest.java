@@ -342,6 +342,14 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
         slave.save();
 
+        if (populateForeman(foreman.getUrl().toString()+"/api/v2", sshslave1.getCid(),
+                sshslave1.getIpAddress(), labelExpression1, "1") != 0) {
+            throw new Exception("failed to populate foreman");
+        }
+        if (populateForeman(foreman.getUrl().toString()+"/api/v2", "dummy",
+                "9.9.9.9", labelExpression2, "2") != 0) {
+            throw new Exception("failed to populate foreman");
+        }
         jenkins.configure();
         cloud = addCloud(jenkins.getConfigPage());
         //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
