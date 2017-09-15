@@ -324,7 +324,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class);
         launcher.host.set(sshslave1.ipBound(22));
         launcher.port(sshslave1.port(22));
-        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
+//        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
         launcher.pwdCredentials("test", "test");
 //        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
 //        launcher.selectCredentials("test");
