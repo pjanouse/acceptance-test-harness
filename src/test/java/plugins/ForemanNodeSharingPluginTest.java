@@ -313,19 +313,9 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
      */
     @Test
     public void test() throws Exception {
-/*
-        jenkins.save();
-
-        FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
-
-        Build b1 = job1.scheduleBuild();
-        b1.waitUntilFinished(PROVISION_TIMEOUT);
-*/
-
         sshslave1 = docker1.get();
         foreman = dockerForeman.get();
 
-/*
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
         slave.setExecutors(1);
         slave.remoteFS.set("/tmp");
@@ -334,13 +324,14 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class);
         launcher.host.set(sshslave1.ipBound(22));
         launcher.port(sshslave1.port(22));
-        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
+//        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
         launcher.pwdCredentials("test", "test");
 //        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
 //        launcher.selectCredentials("test");
         slave.save();
-*/
 
+
+/*
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
         slave.setLauncher(SshSlaveLauncher.class).pwdCredentials("test", "test");
         slave.save();
@@ -356,7 +347,6 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         Build b1 = job1.scheduleBuild();
         b1.waitUntilFinished(PROVISION_TIMEOUT);
 
-/*
         slave.waitUntilOnline();
         assertTrue(slave.isOnline());
         System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
