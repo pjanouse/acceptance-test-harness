@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sh -x
+
 DOMAIN="localdomain"
 DOMAIN_ID=1
 
