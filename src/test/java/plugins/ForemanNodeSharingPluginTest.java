@@ -366,6 +366,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         sc.scope.select("GLOBAL");
         sc.username.set("test");
         sc.password.set("test");
+        sc.setId("test");
         c.create();
         elasticSleep(10000);
 
