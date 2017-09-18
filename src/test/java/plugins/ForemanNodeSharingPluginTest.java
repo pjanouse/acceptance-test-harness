@@ -321,7 +321,6 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         jenkins.runScript("import hudson.slaves.NodeProvisioner; NodeProvisioner.NodeProvisionerInvoker."
                 + "INITIALDELAY = NodeProvisioner.NodeProvisionerInvoker.RECURRENCEPERIOD = 100;");
 
-/*
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
         slave.setExecutors(1);
         slave.remoteFS.set("/tmp");
@@ -329,7 +328,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class);
         launcher.host.set(sshslave1.ipBound(22));
         launcher.port(sshslave1.port(22));
-//        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
+        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
         launcher.pwdCredentials("test", "test");
 //        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
 //        launcher.selectCredentials("test");
@@ -337,13 +336,12 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         slave.waitUntilOnline();
         assertTrue(slave.isOnline());
         System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
-*/
 
 
-        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
-        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class).pwdCredentials("test", "test");
-        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
-        slave.save();
+//        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
+//        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class).pwdCredentials("test", "test");
+//        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
+//        slave.save();
 
         jenkins.configure();
         cloud = addCloud(jenkins.getConfigPage());
