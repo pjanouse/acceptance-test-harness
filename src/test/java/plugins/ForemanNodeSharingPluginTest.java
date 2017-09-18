@@ -321,6 +321,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         jenkins.runScript("import hudson.slaves.NodeProvisioner; NodeProvisioner.NodeProvisionerInvoker."
                 + "INITIALDELAY = NodeProvisioner.NodeProvisionerInvoker.RECURRENCEPERIOD = 100;");
 
+/*
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
         slave.setExecutors(1);
         slave.remoteFS.set("/tmp");
@@ -356,6 +357,17 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 //        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class).pwdCredentials("test", "test");
 //        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
 //        slave.save();
+*/
+
+        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
+        c.open();
+
+        final UserPwdCredential sc = c.add(UserPwdCredential.class);
+        sc.scope.select("GLOBAL");
+        sc.username.set("test");
+        sc.password.set("test");
+        c.create();
+        elasticSleep(10000);
 
         jenkins.configure();
         cloud = addCloud(jenkins.getConfigPage());
