@@ -359,11 +359,12 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 //        slave.save();
 */
 
-        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
+//        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
+        CredentialsPage c = new CredentialsPage(jenkins, "_");
         c.open();
 
         final UserPwdCredential sc = c.add(UserPwdCredential.class);
-        sc.scope.select("GLOBAL");
+        //sc.scope.select("GLOBAL");
         sc.username.set("test");
         sc.password.set("test");
         sc.setId("test");
