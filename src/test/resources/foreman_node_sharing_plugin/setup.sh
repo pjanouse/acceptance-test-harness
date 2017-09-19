@@ -115,7 +115,7 @@ echo "** Updating host $HOSTNAME"
 curl -g -H "Content-Type: application/json" \
     -X PUT -d "$hostUpdateString" \
     -k -u $USER:$PASS \
-    $FOREMAN_URL/hosts/$HOST_ID
+    $FOREMAN_URL/hosts/$HOSTNAME
 
 echo ""
 echo "** Done"

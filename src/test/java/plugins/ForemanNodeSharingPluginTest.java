@@ -383,8 +383,8 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         elasticSleep(10000);
         jenkins.save();
 
-        if (populateForeman(foreman.getUrl().toString()+"/api/v2", sshslave1.getIpAddress(),
-                sshslave1.getIpAddress(), labelExpression1, "1") != 0) {
+        if (populateForeman(foreman.getUrl().toString()+"/api/v2", sshslave1.getCid(),
+                /*sshslave1.getIpAddress()*/ sshslave1.ipBound(22), labelExpression1, "1") != 0) {
             throw new Exception("failed to populate foreman");
         }
         if (populateForeman(foreman.getUrl().toString()+"/api/v2", "dummy",
