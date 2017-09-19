@@ -336,6 +336,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         slave.waitUntilOnline();
         assertTrue(slave.isOnline());
         System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
+
         DumbSlave slave1 = jenkins.slaves.create(DumbSlave.class);
         slave1.setExecutors(1);
         slave1.remoteFS.set("/tmp");
@@ -392,10 +393,23 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         }
         elasticSleep(10000);
 
-        FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
-        Build b1 = job1.scheduleBuild();
-        b1.waitUntilFinished(PROVISION_TIMEOUT);
+//        FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
+//        Build b1 = job1.scheduleBuild();
+//        b1.waitUntilFinished(PROVISION_TIMEOUT);
 
+
+        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
+        slave.setExecutors(1);
+        slave.remoteFS.set("/tmp");
+        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class);
+        launcher.host.set(sshslave1.ipBound(22));
+        launcher.port(sshslave1.port(22));
+        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
+        launcher.selectCredentials("test");
+        slave.save();
+        slave.waitUntilOnline();
+        assertTrue(slave.isOnline());
+        System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
     }
 
 }
