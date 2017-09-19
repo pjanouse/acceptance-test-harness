@@ -363,14 +363,13 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         CredentialsPage c = new CredentialsPage(jenkins, "_");
         c.open();
 
-//        final UserPwdCredential sc = c.add(UserPwdCredential.class);
-//        sc.username.set("test");
-//        sc.password.set("test");
-//        sc.setId("test");
-
-        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
+        final UserPwdCredential sc = c.add(UserPwdCredential.class);
         sc.username.set("test");
-        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
+        sc.password.set("test");
+
+//        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
+//        sc.username.set("test");
+//        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
 
         sc.setId("test");
 //        sc.scope.select("GLOBAL");
