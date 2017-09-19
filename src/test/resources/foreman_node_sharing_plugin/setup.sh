@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sh -x
+set -x
 
 DOMAIN="localdomain"
 DOMAIN_ID=1
