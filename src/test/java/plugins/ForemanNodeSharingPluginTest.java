@@ -366,6 +366,13 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         assertTrue(slave.isOnline());
         System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
 
+        jenkins.visit("/cloud/" + cloud.getCloudName());
+        System.out.println("\n\n"
+                + driver.getPageSource().substring(
+                        driver.getPageSource().indexOf(sshslave1.getCid(),
+                        driver.getPageSource().indexOf(sshslave1.getCid()) + 200))
+                );
+
 //        FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
 //        Build b1 = job1.scheduleBuild();
 //        b1.waitUntilFinished(PROVISION_TIMEOUT);
