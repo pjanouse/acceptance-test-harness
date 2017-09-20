@@ -70,7 +70,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
      * Setup instance before each test.
      * @throws Exception if occurs.
      */
-//    @Before
+    @Before
     public void setUp() throws Exception {
 
         jenkins.runScript("import hudson.slaves.NodeProvisioner; NodeProvisioner.NodeProvisionerInvoker."
@@ -79,15 +79,22 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         foreman = dockerForeman.get();
         sshslave1 = docker1.get();
 
-        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
+        CredentialsPage c = new CredentialsPage(jenkins, "_");
+//        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
         c.open();
 
-        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
-        sc.scope.select("GLOBAL");
+        final UserPwdCredential sc = c.add(UserPwdCredential.class);
         sc.username.set("test");
-        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
-        c.create();
+        sc.password.set("test");
 
+//        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
+//        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
+
+//        sc.scope.select("GLOBAL");
+        sc.username.set("test");
+        sc.setId("test");
+//        sc.scope.select("GLOBAL");
+        c.create();
         //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
         elasticSleep(10000);
 
@@ -104,7 +111,6 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         cloud = addCloud(jenkins.getConfigPage());
         //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
         elasticSleep(10000);
-
     }
 
     /**
@@ -315,28 +321,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
      */
     @Test
     public void test() throws Exception {
-        sshslave1 = docker1.get();
-        foreman = dockerForeman.get();
-
-        jenkins.runScript("import hudson.slaves.NodeProvisioner; NodeProvisioner.NodeProvisionerInvoker."
-                + "INITIALDELAY = NodeProvisioner.NodeProvisionerInvoker.RECURRENCEPERIOD = 100;");
-
 /*
-        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
-        slave.setExecutors(1);
-        slave.remoteFS.set("/tmp");
-        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class);
-        launcher.host.set(sshslave1.ipBound(22));
-        launcher.port(sshslave1.port(22));
-        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
-        launcher.pwdCredentials("test", "test");
-//        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
-//        launcher.selectCredentials("test");
-        slave.save();
-        slave.waitUntilOnline();
-        assertTrue(slave.isOnline());
-        System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
-
         DumbSlave slave1 = jenkins.slaves.create(DumbSlave.class);
         slave1.setExecutors(1);
         slave1.remoteFS.set("/tmp");
@@ -361,37 +346,12 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 */
 
 //        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
-        CredentialsPage c = new CredentialsPage(jenkins, "_");
-        c.open();
-
-        final UserPwdCredential sc = c.add(UserPwdCredential.class);
-        sc.username.set("test");
-        sc.password.set("test");
-
 //        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
 //        sc.username.set("test");
 //        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
 
-        sc.setId("test");
-//        sc.scope.select("GLOBAL");
-        c.create();
-        elasticSleep(10000);
 
-        jenkins.configure();
-        cloud = addCloud(jenkins.getConfigPage());
-        //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
-        elasticSleep(10000);
         jenkins.save();
-
-        if (populateForeman(foreman.getUrl().toString()+"/api/v2", sshslave1.getCid(),
-                /*sshslave1.getIpAddress()*/ sshslave1.ipBound(22), labelExpression1, "1") != 0) {
-            throw new Exception("failed to populate foreman");
-        }
-        if (populateForeman(foreman.getUrl().toString()+"/api/v2", "dummy",
-                "9.9.9.9", labelExpression2, "2") != 0) {
-            throw new Exception("failed to populate foreman");
-        }
-        elasticSleep(10000);
 
         DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
         slave.setExecutors(1);
@@ -406,9 +366,9 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         assertTrue(slave.isOnline());
         System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
 
-        FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
-        Build b1 = job1.scheduleBuild();
-        b1.waitUntilFinished(PROVISION_TIMEOUT);
+//        FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
+//        Build b1 = job1.scheduleBuild();
+//        b1.waitUntilFinished(PROVISION_TIMEOUT);
     }
 
 }
