@@ -369,11 +369,12 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 
         waitForHostsMap(sshslave1.getCid(), EXTENDED_PROVISION_TIMEOUT);
         jenkins.visit("/cloud/" + cloud.getCloudName());
-        System.out.println("\n\n"
-                + driver.getPageSource().substring(
-                        driver.getPageSource().indexOf(sshslave1.getCid(),
-                        driver.getPageSource().indexOf(sshslave1.getCid()) + 200))
-                );
+//        System.out.println("\n\n"
+//                + driver.getPageSource().substring(
+//                        driver.getPageSource().indexOf(sshslave1.getCid(),
+//                        driver.getPageSource().indexOf(sshslave1.getCid()) + 200))
+//                );
+        System.out.println("\n\n" + driver.getPageSource() + "\n\n");
 
 //        FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
 //        Build b1 = job1.scheduleBuild();
