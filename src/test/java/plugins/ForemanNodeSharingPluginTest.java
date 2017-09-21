@@ -48,7 +48,7 @@ import static org.junit.Assert.assertTrue;
  * Acceptance Test Harness Test for Foreman Node Sharing Plugin.
  *
  */
-@WithPlugins({"foreman-node-sharing", "ssh-slaves@1.15"})
+@WithPlugins({"foreman-node-sharing", "ssh-slaves"})
 @WithDocker
 public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
     @Inject private DockerContainerHolder<ForemanContainer> dockerForeman;
