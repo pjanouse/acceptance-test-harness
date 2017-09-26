@@ -1,6 +1,9 @@
 package plugins;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+import com.sun.security.ntlm.Client;
 import org.codehaus.plexus.util.FileUtils;
 import org.jenkinsci.test.acceptance.docker.Docker;
 import org.jenkinsci.test.acceptance.docker.DockerContainerHolder;
@@ -31,18 +34,24 @@ import org.jenkinsci.test.acceptance.po.MatrixRun;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import static org.bouncycastle.cms.RecipientId.password;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
 import static org.jenkinsci.test.acceptance.po.FormValidation.Kind.OK;
 import static org.junit.Assert.assertTrue;
+import static sun.security.x509.CertificateVersion.V2;
 
 /**
  * Acceptance Test Harness Test for Foreman Node Sharing Plugin.
@@ -102,10 +111,12 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
                 sshslave1.ipBound(22), labelExpression1, "1") != 0) {
             throw new Exception("failed to populate foreman");
         }
-        if (populateForeman(foreman.getUrl().toString()+"/api/v2", "dummy",
-                "9.9.9.9", labelExpression2, "2") != 0) {
-            throw new Exception("failed to populate foreman");
-        }
+//        if (populateForeman(foreman.getUrl().toString()+"/api/v2", "dummy",
+//                "9.9.9.9", labelExpression2, "2") != 0) {
+//            throw new Exception("failed to populate foreman");
+//        }
+
+
 
         jenkins.configure();
         cloud = addCloud(jenkins.getConfigPage());
@@ -279,7 +290,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 
         URL script =
                 ForemanNodeSharingPluginTest.class.getClassLoader()
-                .getResource("foreman_node_sharing_plugin/setup.sh");
+                .getResource("foreman_node_sharing_plugin/setup1.sh");
         File tempScriptFile = File.createTempFile("setup", ".sh");
         tempScriptFile.setExecutable(true);
         FileUtils.copyURLToFile(script, tempScriptFile);
