@@ -93,7 +93,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
         elasticSleep(10000);
 
-        if (populateForeman(foreman.getUrl().toString()+"/api/v2", sshslave1.ipBound(22),
+        if (populateForeman(foreman.getUrl().toString()+"/api/v2", /* sshslave1.ipBound(22) */ sshslave1.getIpAddress(),
                 sshslave1.ipBound(22), labelExpression1, "1") != 0) {
             throw new Exception("failed to populate foreman");
         }
