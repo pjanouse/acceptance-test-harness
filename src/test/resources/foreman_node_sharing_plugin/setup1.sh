@@ -2,6 +2,9 @@
 
 set -x
 
+USER="admin"
+PASS="changeme"
+
 if [ -z "$1" ] ; then
   FOREMAN_URL="http://localhost:32768/api/v2"
 else
