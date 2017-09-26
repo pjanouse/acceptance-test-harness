@@ -1,9 +1,6 @@
 package plugins;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.inject.Inject;
-import com.sun.security.ntlm.Client;
 import org.codehaus.plexus.util.FileUtils;
 import org.jenkinsci.test.acceptance.docker.Docker;
 import org.jenkinsci.test.acceptance.docker.DockerContainerHolder;
@@ -13,15 +10,10 @@ import org.jenkinsci.test.acceptance.junit.AbstractJUnitTest;
 import org.jenkinsci.test.acceptance.junit.WithDocker;
 import org.jenkinsci.test.acceptance.junit.WithPlugins;
 import org.jenkinsci.test.acceptance.plugins.credentials.CredentialsPage;
-import org.jenkinsci.test.acceptance.plugins.credentials.ManagedCredentials;
 import org.jenkinsci.test.acceptance.plugins.credentials.UserPwdCredential;
 import org.jenkinsci.test.acceptance.plugins.foreman_node_sharing.ForemanSharedNodeCloudPageArea;
-import org.jenkinsci.test.acceptance.plugins.ssh_credentials.SshCredentialDialog;
-import org.jenkinsci.test.acceptance.plugins.ssh_credentials.SshPrivateKeyCredential;
 import org.jenkinsci.test.acceptance.plugins.ssh_slaves.SshSlaveLauncher;
 import org.jenkinsci.test.acceptance.po.Build;
-import org.jenkinsci.test.acceptance.po.Cloud;
-import org.jenkinsci.test.acceptance.po.ComputerLauncher;
 import org.jenkinsci.test.acceptance.po.DumbSlave;
 import org.jenkinsci.test.acceptance.po.FormValidation;
 import org.jenkinsci.test.acceptance.po.FreeStyleJob;
@@ -34,24 +26,18 @@ import org.jenkinsci.test.acceptance.po.MatrixRun;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import static org.bouncycastle.cms.RecipientId.password;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
 import static org.jenkinsci.test.acceptance.po.FormValidation.Kind.OK;
 import static org.junit.Assert.assertTrue;
-import static sun.security.x509.CertificateVersion.V2;
 
 /**
  * Acceptance Test Harness Test for Foreman Node Sharing Plugin.
