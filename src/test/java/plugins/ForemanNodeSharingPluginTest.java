@@ -321,7 +321,8 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
      */
     @Test
     public void test() throws Exception {
-/*
+        jenkins.save();
+
         DumbSlave slave1 = jenkins.slaves.create(DumbSlave.class);
         slave1.setExecutors(1);
         slave1.remoteFS.set("/tmp");
@@ -330,7 +331,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         launcher1.host.set(sshslave1.ipBound(22));
         launcher1.port(sshslave1.port(22));
         launcher1.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
-        launcher.pwdCredentials("test", "test");
+        launcher1.pwdCredentials("test", "test");
 //        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
 //        launcher.selectCredentials("test");
         slave1.save();
@@ -338,6 +339,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         assertTrue(slave1.isOnline());
         System.out.println("\n\nSlave1 log:\n" + slave1.getLog() + "\n================\n\n");
 
+/*
 
 //        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
 //        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class).pwdCredentials("test", "test");
@@ -365,8 +367,9 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 //        assertTrue(slave.isOnline());
 //        System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
 
-        jenkins.save();
 
+
+/*
         waitForHostsMap(sshslave1.getCid(), EXTENDED_PROVISION_TIMEOUT);
         jenkins.visit("/cloud/" + cloud.getCloudName());
         System.out.println("\n\n" + driver.getPageSource() + "\n\n");
@@ -389,6 +392,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         System.out.println("\n\nSlave1 log:\n" + slave1.getLog() + "\n================\n\n");
 
         b1.waitUntilFinished(PROVISION_TIMEOUT);
+*/
     }
 
 }
