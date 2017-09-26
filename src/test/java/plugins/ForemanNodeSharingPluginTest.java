@@ -97,10 +97,10 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
                 sshslave1.ipBound(22), labelExpression1, "1") != 0) {
             throw new Exception("failed to populate foreman");
         }
-//        if (populateForeman(foreman.getUrl().toString()+"/api/v2", "dummy",
-//                "9.9.9.9", labelExpression2, "2") != 0) {
-//            throw new Exception("failed to populate foreman");
-//        }
+        if (populateForeman(foreman.getUrl().toString()+"/api/v2", "dummy",
+                "9.9.9.9", labelExpression2, "2") != 0) {
+            throw new Exception("failed to populate foreman");
+        }
 
 
 
@@ -369,9 +369,9 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 
 
 
-        waitForHostsMap(sshslave1.getCid(), EXTENDED_PROVISION_TIMEOUT);
-        jenkins.visit("/cloud/" + cloud.getCloudName());
-        System.out.println("\n\n" + driver.getPageSource() + "\n\n");
+        waitForHostsMap(sshslave1.ipBound(22), EXTENDED_PROVISION_TIMEOUT);
+//        jenkins.visit("/cloud/" + cloud.getCloudName());
+//        System.out.println("\n\n" + driver.getPageSource() + "\n\n");
 
         FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
         Build b1 = job1.scheduleBuild();
