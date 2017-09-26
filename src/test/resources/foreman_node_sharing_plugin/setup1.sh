@@ -35,7 +35,7 @@ else
   HOST_ID="$5"
 fi
 
-hostCreateString="{ \"host\": { \"name\": \"$HOSTNAME\", \"manage\": false } }"
+hostCreateString="{ \"host\": { \"name\": \"$HOSTNAME\", \"managed\": false } }"
 hostUpdateString="{ \"host\": { \"name\": \"$HOSTNAME\", \"host_parameters_attributes\": [ { \"name\": \"RESERVED\", \"value\": \"false\" } , { \"name\": \"JENKINS_LABEL\", \"value\": \"LABEL\" }, { \"name\": \"JENKINS_SLAVE_REMOTEFS_ROOT\", \"value\": \"/tmp/remoteFSRoot\" }] } }"
 
 echo ""
