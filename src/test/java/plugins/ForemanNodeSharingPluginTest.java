@@ -99,7 +99,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         elasticSleep(10000);
 
         if (populateForeman(foreman.getUrl().toString()+"/api/v2", sshslave1.getCid(),
-                sshslave1.getIpAddress(), labelExpression1, "1") != 0) {
+                sshslave1.ipBound(22), labelExpression1, "1") != 0) {
             throw new Exception("failed to populate foreman");
         }
         if (populateForeman(foreman.getUrl().toString()+"/api/v2", "dummy",
@@ -323,13 +323,14 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
     public void test() throws Exception {
         jenkins.save();
 
+/*
         DumbSlave slave1 = jenkins.slaves.create(DumbSlave.class);
         slave1.setExecutors(1);
         slave1.remoteFS.set("/tmp");
 
         SshSlaveLauncher launcher1 = slave1.setLauncher(SshSlaveLauncher.class);
-//        launcher1.host.set(sshslave1.ipBound(22));
-        launcher1.host.set(sshslave1.getIpAddress());
+        launcher1.host.set(sshslave1.ipBound(22));
+//        launcher1.host.set(sshslave1.getIpAddress());
         launcher1.port(sshslave1.port(22));
         launcher1.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
         launcher1.pwdCredentials("test", "test");
@@ -339,6 +340,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         slave1.waitUntilOnline();
         assertTrue(slave1.isOnline());
         System.out.println("\n\nSlave1 log:\n" + slave1.getLog() + "\n================\n\n");
+*/
 
 /*
 
@@ -370,7 +372,6 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 
 
 
-/*
         waitForHostsMap(sshslave1.getCid(), EXTENDED_PROVISION_TIMEOUT);
         jenkins.visit("/cloud/" + cloud.getCloudName());
         System.out.println("\n\n" + driver.getPageSource() + "\n\n");
@@ -385,7 +386,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         SshSlaveLauncher launcher1 = slave1.setLauncher(SshSlaveLauncher.class);
         launcher1.host.set(sshslave1.ipBound(22));
         launcher1.port(sshslave1.port(22));
-//        launcher1.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
+        launcher1.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
         launcher1.selectCredentials("test");
         slave1.save();
         slave1.waitUntilOnline();
@@ -393,7 +394,6 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         System.out.println("\n\nSlave1 log:\n" + slave1.getLog() + "\n================\n\n");
 
         b1.waitUntilFinished(PROVISION_TIMEOUT);
-*/
     }
 
 }
