@@ -373,6 +373,21 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 
         FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
         Build b1 = job1.scheduleBuild();
+        Thread.sleep(1000*60*5);
+
+        DumbSlave slave1 = jenkins.slaves.create(DumbSlave.class);
+        slave1.setExecutors(1);
+        slave1.remoteFS.set("/tmp");
+        SshSlaveLauncher launcher1 = slave1.setLauncher(SshSlaveLauncher.class);
+        launcher1.host.set(sshslave1.ipBound(22));
+        launcher1.port(sshslave1.port(22));
+        launcher1.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
+        launcher1.selectCredentials("test");
+        slave1.save();
+        slave1.waitUntilOnline();
+        assertTrue(slave1.isOnline());
+        System.out.println("\n\nSlave1 log:\n" + slave1.getLog() + "\n================\n\n");
+
         b1.waitUntilFinished(PROVISION_TIMEOUT);
     }
 
