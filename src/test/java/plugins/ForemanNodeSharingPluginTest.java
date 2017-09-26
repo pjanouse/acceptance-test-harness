@@ -378,7 +378,6 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
 
         FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
         Build b1 = job1.scheduleBuild();
-        Thread.sleep(1000*60*5);
 
         DumbSlave slave1 = jenkins.slaves.create(DumbSlave.class);
         slave1.setExecutors(1);
