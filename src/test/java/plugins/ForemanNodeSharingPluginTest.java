@@ -10,8 +10,10 @@ import org.jenkinsci.test.acceptance.junit.AbstractJUnitTest;
 import org.jenkinsci.test.acceptance.junit.WithDocker;
 import org.jenkinsci.test.acceptance.junit.WithPlugins;
 import org.jenkinsci.test.acceptance.plugins.credentials.CredentialsPage;
+import org.jenkinsci.test.acceptance.plugins.credentials.ManagedCredentials;
 import org.jenkinsci.test.acceptance.plugins.credentials.UserPwdCredential;
 import org.jenkinsci.test.acceptance.plugins.foreman_node_sharing.ForemanSharedNodeCloudPageArea;
+import org.jenkinsci.test.acceptance.plugins.ssh_credentials.SshPrivateKeyCredential;
 import org.jenkinsci.test.acceptance.plugins.ssh_slaves.SshSlaveLauncher;
 import org.jenkinsci.test.acceptance.po.Build;
 import org.jenkinsci.test.acceptance.po.DumbSlave;
@@ -69,31 +71,30 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
     public void setUp() throws Exception {
 
         jenkins.runScript("import hudson.slaves.NodeProvisioner; NodeProvisioner.NodeProvisionerInvoker."
-                + "INITIALDELAY = NodeProvisioner.NodeProvisionerInvoker.RECURRENCEPERIOD = 100;");
+                + "INITIALDELAY = NodeProvisioner.NodeProvisionerInvoker.RECURRENCEPERIOD = 60;");
 
         foreman = dockerForeman.get();
         sshslave1 = docker1.get();
 
-        CredentialsPage c = new CredentialsPage(jenkins, "_");
-//        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
+//        CredentialsPage c = new CredentialsPage(jenkins, "_");
+        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
         c.open();
 
-        final UserPwdCredential sc = c.add(UserPwdCredential.class);
-        sc.username.set("test");
-        sc.password.set("test");
+//        final UserPwdCredential sc = c.add(UserPwdCredential.class);
+//        sc.username.set("test");
+//        sc.password.set("test");
 
-//        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
-//        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
+        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
+        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
 
-//        sc.scope.select("GLOBAL");
+        sc.scope.select("GLOBAL");
         sc.username.set("test");
         sc.setId("test");
-//        sc.scope.select("GLOBAL");
         c.create();
         //CS IGNORE MagicNumber FOR NEXT 2 LINES. REASON: Mock object.
         elasticSleep(10000);
 
-        if (populateForeman(foreman.getUrl().toString()+"/api/v2", /* sshslave1.ipBound(22) */ sshslave1.getIpAddress(),
+        if (populateForeman(foreman.getUrl().toString()+"/api/v2", sshslave1.getIpAddress(),
                 sshslave1.ipBound(22), labelExpression1, "1") != 0) {
             throw new Exception("failed to populate foreman");
         }
@@ -310,86 +311,4 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
                 .password("changeme")
                 .setCredentials("test");
     }
-
-
-    /**
-     * Test that we can provision, build and release.
-     * @throws Exception if occurs.
-     */
-    @Test
-    public void test() throws Exception {
-        jenkins.save();
-
-/*
-        DumbSlave slave1 = jenkins.slaves.create(DumbSlave.class);
-        slave1.setExecutors(1);
-        slave1.remoteFS.set("/tmp");
-
-        SshSlaveLauncher launcher1 = slave1.setLauncher(SshSlaveLauncher.class);
-        launcher1.host.set(sshslave1.ipBound(22));
-//        launcher1.host.set(sshslave1.getIpAddress());
-        launcher1.port(sshslave1.port(22));
-        launcher1.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
-        launcher1.pwdCredentials("test", "test");
-//        launcher.keyCredentials("test", sshslave1.getPrivateKeyString());
-//        launcher.selectCredentials("test");
-        slave1.save();
-        slave1.waitUntilOnline();
-        assertTrue(slave1.isOnline());
-        System.out.println("\n\nSlave1 log:\n" + slave1.getLog() + "\n================\n\n");
-*/
-
-/*
-
-//        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
-//        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class).pwdCredentials("test", "test");
-//        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
-//        slave.save();
-*/
-
-//        CredentialsPage c = new CredentialsPage(jenkins, ManagedCredentials.DEFAULT_DOMAIN);
-//        final SshPrivateKeyCredential sc = c.add(SshPrivateKeyCredential.class);
-//        sc.username.set("test");
-//        sc.selectEnterDirectly().privateKey.set(sshslave1.getPrivateKeyString());
-
-
-
-//        DumbSlave slave = jenkins.slaves.create(DumbSlave.class);
-//        slave.setExecutors(1);
-//        slave.remoteFS.set("/tmp");
-//        SshSlaveLauncher launcher = slave.setLauncher(SshSlaveLauncher.class);
-//        launcher.host.set(sshslave1.ipBound(22));
-//        launcher.port(sshslave1.port(22));
-//        launcher.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
-//        launcher.selectCredentials("test");
-//        slave.save();
-//        slave.waitUntilOnline();
-//        assertTrue(slave.isOnline());
-//        System.out.println("\n\nSlave log:\n" + slave.getLog() + "\n================\n\n");
-
-
-
-        waitForHostsMap(sshslave1.ipBound(22), EXTENDED_PROVISION_TIMEOUT);
-//        jenkins.visit("/cloud/" + cloud.getCloudName());
-//        System.out.println("\n\n" + driver.getPageSource() + "\n\n");
-
-        FreeStyleJob job1 = createAndConfigureJob(jobLabelExpression1);
-        Build b1 = job1.scheduleBuild();
-
-        DumbSlave slave1 = jenkins.slaves.create(DumbSlave.class);
-        slave1.setExecutors(1);
-        slave1.remoteFS.set("/tmp");
-        SshSlaveLauncher launcher1 = slave1.setLauncher(SshSlaveLauncher.class);
-        launcher1.host.set(sshslave1.ipBound(22));
-        launcher1.port(sshslave1.port(22));
-        launcher1.setSshHostKeyVerificationStrategy(SshSlaveLauncher.NonVerifyingKeyVerificationStrategy.class);
-        launcher1.selectCredentials("test");
-        slave1.save();
-        slave1.waitUntilOnline();
-        assertTrue(slave1.isOnline());
-        System.out.println("\n\nSlave1 log:\n" + slave1.getLog() + "\n================\n\n");
-
-        b1.waitUntilFinished(PROVISION_TIMEOUT);
-    }
-
 }
