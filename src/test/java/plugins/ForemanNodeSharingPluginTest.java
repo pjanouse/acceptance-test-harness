@@ -185,7 +185,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
     @Test
     public void testCheckForCompatible() throws IOException {
         jenkins.save();
-        waitForHostsMap(sshslave1.getCid(), EXTENDED_PROVISION_TIMEOUT);
+        waitForHostsMap(sshslave1.getIpAddress(), EXTENDED_PROVISION_TIMEOUT);
     }
 
     private void waitForHostsMap(final String pattern, final int timeout) {
