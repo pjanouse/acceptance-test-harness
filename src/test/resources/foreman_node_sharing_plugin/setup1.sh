@@ -5,6 +5,8 @@ set -x
 USER="admin"
 PASS="changeme"
 
+JENKINS_SLAVE_REMOTEFS_ROOT="/tmp/remoteFSRoot"
+
 if [ -z "$1" ] ; then
   FOREMAN_URL="http://localhost:32768/api/v2"
 else
@@ -18,25 +20,13 @@ else
 fi
 
 if [ -z "$3" ] ; then
-  HOSTIP="127.0.0.1"
+  LABEL="label1"
 else
-  HOSTIP="$3"
-fi
-
-if [ -z "$4" ] ; then
-  LABEL="label1 aix"
-else
-  LABEL="$4"
-fi
-
-if [ -z "$5" ] ; then
-  HOST_ID=1
-else
-  HOST_ID="$5"
+  LABEL="$3"
 fi
 
 hostCreateString="{ \"host\": { \"name\": \"$HOSTNAME\", \"managed\": false } }"
-hostUpdateString="{ \"host\": { \"name\": \"$HOSTNAME\", \"host_parameters_attributes\": [ { \"name\": \"RESERVED\", \"value\": \"false\" } , { \"name\": \"JENKINS_LABEL\", \"value\": \"$LABEL\" }, { \"name\": \"JENKINS_SLAVE_REMOTEFS_ROOT\", \"value\": \"/tmp/remoteFSRoot\" }] } }"
+hostUpdateString="{ \"host\": { \"name\": \"$HOSTNAME\", \"host_parameters_attributes\": [ { \"name\": \"RESERVED\", \"value\": \"false\" } , { \"name\": \"JENKINS_LABEL\", \"value\": \"$LABEL\" }, { \"name\": \"JENKINS_SLAVE_REMOTEFS_ROOT\", \"value\": \"$JENKINS_SLAVE_REMOTEFS_ROOT\" }] } }"
 
 echo ""
 echo "** Creating host $HOSTNAME"

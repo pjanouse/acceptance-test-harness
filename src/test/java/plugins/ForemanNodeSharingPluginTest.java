@@ -45,7 +45,7 @@ import static org.junit.Assert.assertTrue;
  * Acceptance Test Harness Test for Foreman Node Sharing Plugin.
  *
  */
-@WithPlugins({"foreman-node-sharing", "ssh-slaves"})
+@WithPlugins({"foreman-node-sharing"})
 @WithDocker
 public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
     @Inject private DockerContainerHolder<ForemanContainer> dockerForeman;
@@ -285,9 +285,7 @@ public class ForemanNodeSharingPluginTest extends AbstractJUnitTest {
         ProcessBuilder pb = new ProcessBuilder("/bin/bash", tempScriptFile.getAbsolutePath(),
                 server,
                 hostToCreate,
-                ipAddress,
-                labels,
-                hostID);
+                labels);
 
         pb.directory(tempScriptFile.getParentFile());
         pb.redirectOutput(Redirect.INHERIT);
